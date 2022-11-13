@@ -14,27 +14,55 @@ struct ContentView: View {
     @State private var selection = 0
    
     var body: some View {
-        TabView (selection: $selection) {
-            
-            CakeOrders(vm: vm)
-                .badge(vm.cakes.count)
-                .tabItem() {
-                    Image(systemName: "birthday.cake")
+        NavigationStack {
+            Image("logo")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 150)
+            Text("Ordenes de Pastel")
+                .font(.title2)
+                .fontWeight(.bold)
+            List(vm.cakes) { cake in
+                NavigationLink {
+                    CakeInfoView(cake: cake)
+                } label: {
+                    Text("\(cake.date, style: .date) | \(cake.customer_name)")
                 }
-                .tag(0)
-            NewOrderView(vm: vm)
-                .tabItem() {
-                    Image(systemName: "plus.circle")
+            }
+            .sheet(isPresented: $showsheet) {
+                NewOrderView(vm: vm, showsheet: $showsheet, cake: Cake())
+            }
+            .toolbar {
+                ToolbarItem {
+                    Button {
+                        showsheet.toggle()
+                    } label: {
+                        Image(systemName: "plus")
+                    }
                 }
-                .tag(1)
-//            TodayCakes(vm: vm)
-//                .tabItem() {
-//                    Image(systemName: "heart")
-//                }
-//                .tag(2)
-            
+            }
         }
-        .accentColor(Color("yellow"))
+//        TabView (selection: $selection) {
+//
+//            CakeOrders(vm: vm)
+//                .badge(vm.cakes.count)
+//                .tabItem() {
+//                    Image(systemName: "birthday.cake")
+//                }
+//                .tag(0)
+//            NewOrderView(vm: vm)
+//                .tabItem() {
+//                    Image(systemName: "plus.circle")
+//                }
+//                .tag(1)
+////            TodayCakes(vm: vm)
+////                .tabItem() {
+////                    Image(systemName: "heart")
+////                }
+////                .tag(2)
+//
+//        }
+//        .accentColor(Color("yellow"))
         
     }
     

@@ -9,12 +9,12 @@ import SwiftUI
 
 struct NewOrderView: View {
     @ObservedObject var vm: CakesViewModel
-
+    @Binding var showsheet: Bool
     @State var cake: Cake = Cake()
     var backgroundColor = Color(red: 34, green: 39, blue: 195)
   
     
-    let sizes = ["Small", "Medium", "Large"]
+    let sizes = ["Pequeño", "Mediano", "Grande"]
     
     var body: some View {
         VStack {
@@ -50,6 +50,7 @@ struct NewOrderView: View {
                     Button {
                         vm.cakes.append(cake)
                         vm.sort()
+                        showsheet.toggle()
                     } label: {
                         Text("Submit")
                             .font(.headline)
@@ -67,6 +68,6 @@ struct NewOrderView_Previews: PreviewProvider {
     @State static var vm = CakesViewModel()
     static var previews: some View {
         
-        NewOrderView(vm: vm)
+        NewOrderView(vm: vm, showsheet: $value, cake: Cake())
     }
 }
